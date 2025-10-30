@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="style.css">
+<title>Units Conversion</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+</head>
+<body style="padding-bottom: 40px;">
+
+<div class="page">
+
+<div class="navbar">
+  <ul style="display: flex; list-style: none;">
+    <li><button class="navbutton" onclick="location.href='index.html'">HOME</button></li>
+    <li><button class="navbutton selected" onclick="location.href='units.html'">UNITS CONVERSION</button></li>
+    <li><button class="navbutton" onclick="location.href='qnh.html'">QNH & TA/TL</button></li>
+    <li><button class="navbutton" onclick="location.href='taxi_calc.html'">TAXI FLOW MANAGER</button></li>
+    <li><button class="navbutton" onclick="location.href='speed_calc.html'">TRAFFIC SPEEDS & CONFLICTS</button></li>
+    <li><button class="navbutton" onclick="location.href='traffic_sep.html'">WAKE TURBULENCE SEPARATION</button></li>
+
+  </ul>
+</div>
+<h1>UNITS CONVERSION</h1>
+
+<!-- SPEED -->
+<div class="sectionunits">
+  <p class="sectionunits-title"><span class="arrow">▶</span> Speed Units</p>
+  <div class="collapsible-content hidden">
+    <div class="grid" id="speedGrid">
+      <div class="unit-col">
+        <p style="font-size:24px;">km/h</p>
+        <input type="number" id="in_kmh" placeholder="0">
+        <div class="resultunits" id="out_kmh"></div>
+      </div>
+      <div class="unit-col">
+        <p style="font-size:24px;">kts</p>
+        <input type="number" id="in_kts" placeholder="0">
+        <div class="resultunits" id="out_kts"></div>
+      </div>
+      <div class="unit-col">
+        <p style="font-size:24px;">mph</p>
+        <input type="number" id="in_mph" placeholder="0">
+        <div class="resultunits" id="out_mph"></div>
+      </div>
+      <div class="unit-col">
+        <p style="font-size:24px;">m/s</p>
+        <input type="number" id="in_ms" placeholder="0">
+        <div class="resultunits" id="out_ms"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ALTITUDE -->
+<div class="sectionunits">
+  <p class="sectionunits-title"><span class="arrow">▶</span> Altitude Units</p>
+  <div class="collapsible-content hidden">
+    <div class="grid" id="altGrid">
+      <div class="unit-col">
+        <p style="font-size:24px;">meters</p>
+        <input type="number" id="in_meters" placeholder="0">
+        <div class="resultunits" id="out_meters"></div>
+      </div>
+      <div class="unit-col">
+        <p style="font-size:24px;">feet</p>
+        <input type="number" id="in_feet" placeholder="0">
+        <div class="resultunits" id="out_feet"></div>
+      </div>
+      <div class="unit-col">
+        <p style="font-size:24px;">FL</p>
+        <input type="number" id="in_fl" placeholder="0">
+        <div class="resultunits" id="out_fl"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DISTANCE -->
+<div class="sectionunits">
+  <p class="sectionunits-title"><span class="arrow">▶</span> Distance Units</p>
+  <div class="collapsible-content hidden">
+    <div class="grid" id="distGrid">
+      <div class="unit-col">
+        <p style="font-size:24px;">NM</p>
+        <input type="number" id="in_nm" placeholder="0">
+        <div class="resultunits" id="out_nm"></div>
+      </div>
+      <div class="unit-col">
+        <p style="font-size:24px;">km</p>
+        <input type="number" id="in_km" placeholder="0">
+        <div class="resultunits" id="out_km"></div>
+      </div>
+      <div class="unit-col">
+        <p style="font-size:24px;">meters</p>
+        <input type="number" id="in_dmeter" placeholder="0">
+        <div class="resultunits" id="out_dmeter"></div>
+      </div>
+      <div class="unit-col">
+        <p style="font-size:24px;">miles (SM)</p>
+        <input type="number" id="in_miles" placeholder="0">
+        <div class="resultunits" id="out_miles"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+
+<script>
+// COLLAPSIBLE
+document.querySelectorAll('.sectionunits-title').forEach(title=>{
+  title.addEventListener('click',()=>{
+    const content=title.nextElementSibling;
+    content.classList.toggle('hidden');
+    const arrow=title.querySelector('.arrow');
+    arrow.style.transform=content.classList.contains('hidden')?'rotate(0deg)':'rotate(90deg)';
+  });
+});
+
+let updating=false;
+
+// ---------- SPEED ----------
+function updateSpeed(from,val){
+  if(updating) return; updating=true;
+  let ms;
+  switch(from){
+    case "kmh": ms=val/3.6; break;
+    case "kts": ms=val*0.514444; break;
+    case "mph": ms=val*0.44704; break;
+    case "ms":  ms=val; break;
+  }
+  document.getElementById("out_kmh").innerText=`= ${(ms*3.6).toFixed(2)} km/h`;
+  document.getElementById("out_kts").innerText=`= ${(ms/0.514444).toFixed(2)} kts`;
+  document.getElementById("out_mph").innerText=`= ${(ms/0.44704).toFixed(2)} mph`;
+  document.getElementById("out_ms").innerText=`= ${ms.toFixed(2)} m/s`;
+  updating=false;
+}
+["kmh","kts","mph","ms"].forEach(u=>{
+  document.getElementById("in_"+u).addEventListener("input",e=>{
+    const v=parseFloat(e.target.value); if(isNaN(v)) return;
+    updateSpeed(u,v);
+  });
+});
+
+// ---------- ALTITUDE ----------
+function updateAlt(from,val){
+  if(updating) return; updating=true;
+  let meters;
+  switch(from){
+    case "meters": meters=val; break;
+    case "feet": meters=val*0.3048; break;
+    case "fl": meters=val*100*0.3048; break;
+  }
+  document.getElementById("out_meters").innerText=`= ${meters.toFixed(1)} m`;
+  document.getElementById("out_feet").innerText=`= ${(meters/0.3048).toFixed(0)} ft`;
+  document.getElementById("out_fl").innerText=`= FL ${(meters/30.48).toFixed(0)}`;
+  updating=false;
+}
+["meters","feet","fl"].forEach(u=>{
+  document.getElementById("in_"+u).addEventListener("input",e=>{
+    const v=parseFloat(e.target.value); if(isNaN(v)) return;
+    updateAlt(u,v);
+  });
+});
+
+// ---------- DISTANCE ----------
+function updateDist(from,val){
+  if(updating) return; updating=true;
+  let meters;
+  switch(from){
+    case "nm": meters=val*1852; break;
+    case "km": meters=val*1000; break;
+    case "dmeter": meters=val; break;
+    case "miles": meters=val*1609.34; break;
+  }
+  document.getElementById("out_nm").innerText=`= ${(meters/1852).toFixed(2)} NM`;
+  document.getElementById("out_km").innerText=`= ${(meters/1000).toFixed(2)} km`;
+  document.getElementById("out_dmeter").innerText=`= ${meters.toFixed(2)} m`;
+  document.getElementById("out_miles").innerText=`= ${(meters/1609.34).toFixed(2)} miles`;
+  updating=false;
+}
+["nm","km","dmeter","miles"].forEach(u=>{
+  document.getElementById("in_"+u).addEventListener("input",e=>{
+    const v=parseFloat(e.target.value); if(isNaN(v)) return;
+    updateDist(u,v);
+  });
+});
+</script>
+
+</body>
+</html>

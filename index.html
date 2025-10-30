@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="style.css">
+<title>ATC Tools</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+
+<div class="page">
+
+<div class="navbar">
+  <ul style="display: flex; list-style: none;">
+    <li><button class="navbutton selected" onclick="location.href='index.html'">HOME</button></li>
+    <li><button class="navbutton" onclick="location.href='units.html'">UNITS CONVERSION</button></li>
+    <li><button class="navbutton" onclick="location.href='qnh.html'">QNH & TA/TL</button></li>
+    <li><button class="navbutton" onclick="location.href='taxi_calc.html'">TAXI FLOW MANAGER</button></li>
+    <li><button class="navbutton" onclick="location.href='speed_calc.html'">TRAFFIC SPEEDS & CONFLICTS</button></li>
+    <li><button class="navbutton" onclick="location.href='traffic_sep.html'">WAKE TURBULENCE SEPARATION</button></li>
+
+  </ul>
+</div>
+
+
+<h1>ATC Tools</h1>
+<p class="indextext">This is a series of tools to help Virtual Air Traffic Controllers with basic calculations, so they can focus on the radar, the radio, and the decision-making. <br> Here's what's included:</p>
+
+<p class="indextitle">Units Conversion:</p>
+<p class="indextext">A series of basic calculators to <b>convert units</b> for speed, altitude, and distance.</p>
+<p class="indextitle">QNH & TA/TL Calculator:</p>
+<p class="indextext">To calculate the <b>Transition Level</b> for your ATIS, given the QNH and TA.</p>
+<p class="indextitle">Taxi Flow Manager:</p>
+<p class="indextext">This automatic-sorting-list will give you a <b>suggestion for departure prefference</b>, given the Wake Turbulence Category (the heaviest the latest), Speed Category (the slowest the latest), SID (to avoid two traffic with the same SID taking off together), and EOBT.<br> The calculator will also give you the <b>minimum separation</b>.</p>
+<p class="indextitle">Traffic Speeds Calculator:</p>
+<p class="indextext">This is a series of calculators related to traffic speeds. It includes calculators for:</p> 
+<ol>
+    <li><p class="indextext"><b>Single traffic</b>, to calculate Distance and ETA given a constant speed.</p></li>
+    <li><p class="indextext"><b>Two traffic on the same route</b>, to calculate and avoid loss of separation if the 2nd one is faster.</p></li>
+</ol>
+<p class="indextitle">Traffic Separation Calculator:</p>
+<p class="indextext">By writing on a form the wake turbulence category for two traffic, the calculator will tell you the best separation for them. Works both for departing traffic and airborne traffic.</p>
+<br>
+<hr>
+<br>
+<p class="indextitle">Recommendations Before Going Online...</p>
+<ul style="font-size: 18px;">
+    <li><p>KNOW YOUR CONTROL AREA! <br>Read all the documentation beforehand (AIP, IVAO's website, briefings...). Get familiar with the airspace and procedures such as taxi routes, VFR procedures, LVPs, SIDs and STARs... the airport's "layout" (gates and taxiways restrictions...), the other controller's frecuencies... <br>Don't go online until you know everything on your area of responsibility.</p></li>
+    <li><p>KNOW YOUR SOFTWARE! <br>Make sure you know all the features of the radar software, and familiarize yourself with it. Not remembering how it works during the ATC session can cause a lack of efficiency, agility, and flights safety.</p></li>
+</ul>
+<br>
+<p class="indextitle">Now let's go with the steps before connecting:</p>
+<p class="indextext">(With list of useful links)</p>
+
+<br>
+<ol style="font-size: 18px;">
+    <li><p>Make sure your headphones and microphone are working properly.</p></li>
+    <li><p>Make sure Aurora is set up as you like it: Insets, Labels, menus, ColorScheme, Sound Settings, COM & VHF...</p></li>  
+    <li><p>Check <a href="https://new.es.ivao.aero/aip/notams" target="_blank">NOTAMS</a> for your area.</p></li>
+    <li><p>Check <a href="https://webeye.ivao.aero/" target="_blank">Webeye</a> for <b>adjacent ATC</b> stations and traffic status on your area.</p></li>
+    <li><p>Check METAR and TAF, and determine <b>active runways</b> and <a href="qnh.html" target="_blank"><b>Transition Level</b></a>.</p></li>
+    <li style="margin-left: 20px; list-style-type: none;"><p><a href="https://e6bx.com/weather/" target="_blank">METAR & TAF Text Decoder</a></p></li>
+    <li style="margin-left: 20px; list-style-type: none;"><p><a href="https://metar-taf.com/?c=401228.-42187.6&p=414286.21922" target="_blank">METAR & TAF Visual Decoder</a></p></li>
+    <li value="6"><p>Make sure your <a href="https://wiki.es.ivao.aero/books/manuales-y-guias/page/chuleta-de-fraseologia" target="_blank">Radio Cheat Sheet</a> and <a href="traffic_sep.html" target="_blank">Traffic Separation Calculator</a> or <a href="taxi_calc.html" target="_blank">Taxi Manager</a> are ready.</p></li>
+    <li><p>Get ready any documentation that could be useful during the ATC session: </p></li>
+    <li style="margin-left: 20px; list-style-type: none;"><p><a href="https://files.es.ivao.aero/WebPage/Documentos/FIRs/LECS/Herramientas/source.html" target="_blank">Airways Checker ("Buscador de aerovias")</a></p></li>
+    <li style="margin-left: 20px; list-style-type: none;"><p><a href="https://new.es.ivao.aero/aip" target="_blank">Airport Procedures & Cheat Sheet ("fichas de aerodromo")</a></p></li>
+    <li value="8"><p>Connect to the Division's Discord Server for coordination with adjacent ATC.</p></li>
+    <li><p>Before connecting, prepare the Remarks for the ATIS (Autoswitch, Datalink, Non Standard Procedures, Severe Weather, TWY in use to vacate RWY, Approach in use, HIRO, etc...)</p></li>
+    <li><p>ONCE CONNECTED TO IVAO</p></li>
+    <li><p>AIRPORTS Window: Check <b>controlled airports</b> and active <b>runways</b>.</p></li>
+    <li><p>ATIS Window: Check <b>ATIS</b> Active, position callsign, active runways, TA & TL, copy and paste remarks previously prepared.</p></li>
+    <li><p>VHF Window: Check frequency, adjust volume.</p></li>
+    <li><p>COM Window: Check VHF1 frequency, send "ONLINE" message.</p></li>
+    <li><p>ATC Window: Open Direct Message for adjacent ATC and coordinate.</p></li>
+    <li><p>Remember to save profile.</p></li>
+</ol>
+
+<br>
+<hr>
+<br>
+<p class="indextitle">ATCtools has been created by an IVAO Member</p>
+<p class="indextext">I've been a member of IVAO Spain since September 2019, and got more than 360 hours of experience as a virtual air traffic controller. Even tho I never applied for my ADC practical exam, I passed the theoretical exam and continued practicing on my own. I've also got experience on non-radar Approach airports such as LEAS and LEGE.</p>
+<p class="indextext">You can contact me via Discord @nukethefox</p>
+<p class="indextext">Disclaimer! I'm not a professional ATC. These calculators have been created through theoretical knowledge and mathematical formulas. There may have been errors when designing the formulas, or translating them into JavaScript. If you find a mistake or incorrect or awkward results, please don't hesitate to contact me. I will enjoy to keep on learning and improving.</p>
+<p style="color: white; background-color: red;"><b>NEVER use these calculators for real life air traffic control. ONLY FOR FLIGHT SIMULATION PURPOSES.</b></p>
+
+
+</div>
+
+
+
+</body>
+</html>

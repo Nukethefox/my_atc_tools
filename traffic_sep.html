@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Traffic Separation</title>
+<link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+</head>
+<body style="padding-bottom: 40px;">
+
+<div class="page">
+
+<div class="navbar">
+  <ul style="display: flex; list-style: none;">
+    <li><button class="navbutton" onclick="location.href='index.html'">HOME</button></li>
+    <li><button class="navbutton" onclick="location.href='units.html'">UNITS CONVERSION</button></li>
+    <li><button class="navbutton" onclick="location.href='qnh.html'">QNH & TA/TL</button></li>
+    <li><button class="navbutton" onclick="location.href='taxi_calc.html'">TAXI FLOW MANAGER</button></li>
+    <li><button class="navbutton" onclick="location.href='speed_calc.html'">TRAFFIC SPEEDS & CONFLICTS</button></li>
+    <li><button class="navbutton selected" onclick="location.href='traffic_sep.html'">WAKE TURBULENCE SEPARATION</button></li>
+  </ul>
+</div>
+
+<h1>TRAFFIC WAKE TURBULENCE SEPARATION</h1>
+
+<div class="sectionseparation">
+  <p style="font-size: 24px;">Departing traffic</p>
+    <div class="separation-forms">
+      <div>
+        <form>
+          <div class="field">
+            <label for="dep_first">1st traffic</label>
+            <select id="dep_first" class="separationselect">
+              <option value="" selected>—</option>
+              <option value="L">L</option>
+              <option value="M">M</option>
+              <option value="H">H</option>
+              <option value="J">J</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="dep_second">2nd traffic</label>
+            <select id="dep_second" class="separationselect">
+              <option value="" selected>—</option>
+              <option value="L">L</option>
+              <option value="M">M</option>
+              <option value="H">H</option>
+              <option value="J">J</option>
+            </select>
+          </div>
+          <div class="field" style="align-items:center; gap:.5rem;">
+            <label for="dep_intersection" style="margin-right:.5rem;">2nd is using intersection?</label>
+            <input type="checkbox" id="dep_intersection">
+          </div>
+          <button id="dep_calc" type="button" class="calcbutton">Calculate</button>
+        </form>
+      </div>
+      <div>
+        <div id="dep_result"></div>
+      </div>
+    </div>
+</div>
+
+<div class="sectionseparation">
+  <p style="font-size: 24px;">Airborne traffic</p>
+    <div class="separation-forms">
+      <div>
+        <form>
+          <div class="field">
+            <label for="air_first">1st traffic</label>
+            <select id="air_first" class="select">
+              <option value="" selected>—</option>
+              <option value="L">L</option>
+              <option value="M">M</option>
+              <option value="H">H</option>
+              <option value="J">J</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="air_second">2nd traffic</label>
+            <select id="air_second" class="select">
+              <option value="" selected>—</option>
+              <option value="L">L</option>
+              <option value="M">M</option>
+              <option value="H">H</option>
+              <option value="J">J</option>
+            </select>
+          </div>
+          <button id="air_calc" type="button" class="calcbutton">Calculate</button>
+        </form>
+      </div>
+      <div>
+        <div id="air_result" class="resultseparation"></div>
+      </div>
+    </div>
+</div>
+
+
+<p style="position: fixed; bottom: 0; color: white; font-weight: 900; background-color: red;">FOR FLIGHT SIMULATION PURPOSES ONLY!</p>
+</div>
+
+<script>
+// Departing (minutes). Keys are "1st-2nd".
+const DEPARTING_MIN = {
+  "M-L": 2,
+  "H-M": 2,
+  "H-L": 2,
+  "J-M": 3,
+  "J-L": 3,
+  "J-H": 2
+};
+
+const AIRBORN = {
+  "M-L": { nm: 5, min: 3 },
+  "H-L": { nm: 6, min: 3 },
+  "H-M": { nm: 5, min: 2 },
+  "H-H": { nm: 4, min: null }, 
+  "J-L": { nm: 8, min: 4 },
+  "J-M": { nm: 7, min: 3 },
+  "J-H": { nm: 6, min: 3 }
+};
+
+/* --- Helpers ------------------------------------------------------------ */
+function keyPair(a, b){ return `${a}-${b}`; }
+
+function fmtResult(nm, min) {
+  const parts = [];
+  if (nm != null) parts.push(`${nm} NM`);
+  if (min != null) parts.push(`${min} MIN`);
+  return parts.join(' / ');
+}
+
+
+function warnIfEmpty(sel1, sel2){
+  if(!sel1 || !sel2){
+    return '<div class="warning-box1">⚠ Enter both categories.</div>';
+  }
+  return '';
+}
+
+/* --- Departing calc ----------------------------------------------------- */
+document.getElementById('dep_calc').addEventListener('click', () => {
+  const first = document.getElementById('dep_first').value;
+  const second = document.getElementById('dep_second').value;
+  const isIntersection = document.getElementById('dep_intersection').checked;
+  const out = document.getElementById('dep_result');
+
+  const warn = warnIfEmpty(first, second);
+  if (warn){
+    out.innerHTML = warn;
+    return;
+  }
+
+  const base = DEPARTING_MIN[keyPair(first, second)];
+  if (base == null){
+    out.innerHTML = `<div class="info-box">No specific separation for ${first} ➜ ${second} (departing).</div>` +
+                    `<div>${fmtResult(null, null)}</div>`;
+    return;
+  }
+
+  const minutes = base + (isIntersection ? 1 : 0);
+  out.textContent = fmtResult(null, minutes);
+});
+
+/* --- Airborn calc ------------------------------------------------------- */
+document.getElementById('air_calc').addEventListener('click', () => {
+  const first = document.getElementById('air_first').value;
+  const second = document.getElementById('air_second').value;
+  const out = document.getElementById('air_result');
+
+  const warn = warnIfEmpty(first, second);
+  if (warn){
+    out.innerHTML = warn;
+    return;
+  }
+
+  const req = AIRBORN[keyPair(first, second)];
+  if (!req){
+    out.innerHTML = `<div class="info-box">No specific wake requirement in this table for ${first} ➜ ${second} (airborn).</div>`;
+    out.textContent = ""; // sin resultado si no aplica
+    return;
+  }
+
+  out.textContent = fmtResult(req.nm ?? null, req.min ?? null);
+});
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="style.css">
+<title>Taxi Flow Manager</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body style="padding-bottom: 40px;">
+
+<div class="page">
+
+<div class="navbar">
+  <ul style="display: flex; list-style: none;">
+    <li><button class="navbutton" onclick="location.href='index.html'">HOME</button></li>
+    <li><button class="navbutton" onclick="location.href='units.html'">UNITS CONVERSION</button></li>
+    <li><button class="navbutton" onclick="location.href='qnh.html'">QNH & TA/TL</button></li>
+    <li><button class="navbutton selected" onclick="location.href='taxi_calc.html'">TAXI FLOW MANAGER</button></li>
+    <li><button class="navbutton" onclick="location.href='speed_calc.html'">TRAFFIC SPEEDS & CONFLICTS</button></li>
+    <li><button class="navbutton" onclick="location.href='traffic_sep.html'">WAKE TURBULENCE SEPARATION</button></li>
+  </ul>
+</div>
+
+<h1>TAXI FLOW MANAGER</h1>
+
+
+<!-- FORMULARIO ORIGINAL para añadir tráfico manualmente (no lo he eliminado) -->
+<form id="aircraftForm">
+  <input type="text" id="callsign" class="uppercase" placeholder="Callsign" required>
+  <input type="text" id="icaoaircraft" class="uppercase" placeholder="AIRCRAFT" required>
+  <select style="cursor:pointer;" id="weight" required>
+    <option value="L">L</option>
+    <option value="M" selected>M</option>
+    <option value="H">H</option>
+    <option value="J">J</option>
+  </select>
+  <input type="text" id="sid" class="uppercase" placeholder="SID" required> 
+  <input class="EOBTin" type="time" id="eobt" required step="60">
+  <button type="submit">ADD TRAFFIC</button>
+  <br>
+  <span id="icaoHint" style="color:red; display:none; border-top: 10px;">Please write valid ICAO Code</span>
+</form>
+
+<table id="aircraftTable">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>CALLSIGN</th>
+      <th>ACFT</th>
+      <th>WT</th>
+      <th>SID</th>
+      <th>EOBT</th>
+      <th>SEPARATION (MIN)</th>
+      <th>SEPARATION (NM)</th>
+      <th>REMOVE</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+<p style="position: fixed; bottom: 0; color: white; font-weight: 900; background-color: red;">FOR FLIGHT SIMULATION PURPOSES ONLY!</p>
+
+</div>
+
+<script>
+// === Listas ICAO ===
+// Jets
+const jets = [
+  "A124","A148","A158","A19N","A20N","A21N","A220","A221","A223","A300","A306","A310","A318","A318","A319","A319","A320","A320",
+  "A321","A321","A330","A332","A332","A333","A333","A337","A338","A339","A340","A342","A343","A345","A346","A350","A359","A35K",
+  "A380","A388","A3ST","A225","AN72","AN74","B461","B462","B463","B52","B703","B712","B720","B721","B722","B732","B733","B734",
+  "B735","B736","B737","B738","B739","B741","B742","B743","B744","BLCF","B74R","B74S","B752","B753","B757","B762","B763","B764",
+  "B767","B772","B773","B77W","B77L","B778","B779","B787","B788","B789","B78X","CL30","CL35","CRJ1","CRJ2","CRJ7","CRJ9","CRJX",
+  "C25A","C25B","C25C","C500","C510","C550","C56X","C650","C680","C700","C750","F2TH","FA50","FA6X","FA7X","GLEX","H25B","H25C",
+  "RJ1H","RJ70","RJ85","S601","BA11","AJ27","CL60","C919"
+].filter((v,i,a)=>a.indexOf(v)===i).sort();
+
+// Turboprops
+const turboprops = [
+  "A140","A400","AN12","AN24","AN26","AN28","AN30","AN32","AT42","AT43","AT45","AT46","AT72","AT73","AT75","AT76","B190","BE20",
+  "BE99","C208","C212","C408","CL2T","CL4T","CN35","DA42","DHC5","DHC6","DHC7","DH8A","DH8B","DH8C","F50","JS31","JS32","JS41","N262","SF34"
+].filter((v,i,a)=>a.indexOf(v)===i).sort();
+
+// Pistons
+const pistons = [
+  "A101","A139","B06","B212","B222","B407","B429","B430","B47G","BRB2","C152","C172","DA40","DA42","DR40","H160","H269","H47","H500","H60",
+  "KA26","MD52","MI26","MM24","PA28","R22","R44","S64","SR22","UH1","AS50","AS65","BE58","BE60","P28A"
+].filter((v,i,a)=>a.indexOf(v)===i).sort();
+
+// Fighters
+const fighters = [
+  "A10","EUFI","F15","F16","F18","F22","F35","MIG29","SU27"
+].filter((v,i,a)=>a.indexOf(v)===i).sort();
+
+
+function isValidIcao(code){
+  const c = code.toUpperCase();
+  return jets.includes(c) || turboprops.includes(c) || pistons.includes(c) || fighters.includes(c);
+}
+
+// === Helpers ===
+function mapSpeedCat(icao){
+  if(!icao) return "F";
+  const code = icao.toUpperCase();
+  if(jets.includes(code)) return "F";
+  if(turboprops.includes(code)) return "T";
+  if(pistons.includes(code)) return "S";
+  if(fighters.includes(code)) return "V";
+  return "F";
+}
+function weightValue(w){ return {'L':1,'M':2,'H':3,'J':4}[w]||5; }
+function speedValue(s){ return {'V':1,'F':2,'T':3,'S':4}[s]||5; }
+function wakeSeparation(prev,curr){ const map = { "L":{"M":2,"H":2,"J":3}, "M":{"H":2,"J":3}, "H":{"J":2} }; return map[curr]?.[prev]||2; }
+function speedSeparation(prev,curr){ const map = { "V":{"S":2,"T":2,"F":2,"V":2}, "F":{"S":1.5,"T":1.5,"F":2,"V":"HOLD"}, "T":{"S":1.5,"T":2,"F":"HOLD","V":"HOLD"}, "S":{"S":1.5,"T":"HOLD","F":"HOLD","V":"HOLD"} }; return map[curr]?.[prev]||2; }
+function timeToMinutes(timeStr){
+  if(!timeStr) return 0;
+  const parts = timeStr.split(':');
+  if(parts.length === 1 && /^\d{4}$/.test(timeStr)){
+    const hh = parseInt(timeStr.slice(0,2),10);
+    const mm = parseInt(timeStr.slice(2),10);
+    return hh*60 + mm;
+  }
+  const [h,m]=parts;
+  return parseInt(h||0,10)*60 + parseInt(m||0,10);
+}
+
+// === DOM ===
+const form = document.getElementById('aircraftForm');
+const tableBody = document.querySelector('#aircraftTable tbody');
+const icaoInput = document.getElementById('icaoaircraft');
+const icaoHint = document.getElementById('icaoHint');
+
+let aircrafts = [];
+
+// convertir a mayúsculas mientras se escribe
+document.querySelectorAll('input.uppercase').forEach(input => {
+  input.addEventListener('input', ()=>{ input.value = input.value.toUpperCase(); });
+});
+
+// mostrar hint si ICAO no válido
+icaoInput.addEventListener('input', () => {
+  icaoInput.setCustomValidity('');
+  icaoHint.style.display = 'none';
+});
+
+// === Añadir tráfico ===
+form.addEventListener('submit', e=>{
+  e.preventDefault();
+  const icao = icaoInput.value.trim().toUpperCase();
+
+  if(!isValidIcao(icao)){
+    icaoInput.setCustomValidity('Please write valid ICAO Code');
+    icaoHint.style.display = 'none';      // mantenemos oculto el span rojo
+    icaoInput.reportValidity();           // muestra la “ventanita” del navegador
+    return;
+  }
+
+  // si es válido, aseguramos limpiar el estado de error
+  icaoInput.setCustomValidity('');
+
+
+  aircrafts.push({
+    callsign: document.getElementById('callsign').value.trim(),
+    icao: icao,
+    sid: document.getElementById('sid').value.trim(),
+    weight: document.getElementById('weight').value,
+    speed: mapSpeedCat(icao),
+    eobt: document.getElementById('eobt').value
+  });
+
+  updateTable();
+  form.reset();
+  icaoHint.style.display='none';
+});
+
+// === Remove aircraft ===
+function removeAircraft(index){ aircrafts.splice(index,1); updateTable(); }
+window.removeAircraft = removeAircraft;
+
+// === updateTable ===
+function updateTable(){
+  // Ordenación: peso, velocidad, EOBT
+  aircrafts.sort((a,b)=>{
+    let w = weightValue(a.weight)-weightValue(b.weight);
+    if(w!==0) return w;
+    let s = speedValue(a.speed)-speedValue(b.speed);
+    if(s!==0) return s;
+    return timeToMinutes(a.eobt)-timeToMinutes(b.eobt);
+  });
+
+  // Evitar SID consecutivos
+  for(let i=1;i<aircrafts.length;i++){
+    if(aircrafts[i].sid===aircrafts[i-1].sid){
+      for(let j=i+1;j<aircrafts.length;j++){
+        if(aircrafts[j].sid!==aircrafts[i-1].sid){
+          [aircrafts[i],aircrafts[j]]=[aircrafts[j],aircrafts[i]];
+          break;
+        }
+      }
+    }
+  }
+
+  // renderizar tabla
+  tableBody.innerHTML='';
+  aircrafts.forEach((ac,index)=>{
+    let sepMin='', sepNM='';
+    if(index>0){
+      const prev = aircrafts[index-1];
+      let wakeSep = wakeSeparation(prev.weight, ac.weight);
+      let speedSep = speedSeparation(prev.speed, ac.speed);
+      if(wakeSep==="HOLD" || speedSep==="HOLD"){ sepMin="HOLD"; sepNM="HOLD"; }
+      else { sepMin=Math.max(wakeSep,speedSep); sepNM=sepMin*2; }
+    }
+
+    const row = document.createElement('tr');
+    row.innerHTML=`
+      <td>${index+1}</td>
+      <td>${ac.callsign}</td>
+      <td>${ac.icao}</td>
+      <td>${ac.weight}</td>
+      <td>${ac.sid}</td>
+      <td><input type="time" class="inlineInput" value="${ac.eobt}"></td>
+      <td>${sepMin}</td>
+      <td>${sepNM}</td>
+      <td><button class="removeBtn" onclick="removeAircraft(${index})">REMOVE</button></td>
+    `;
+    tableBody.appendChild(row);
+
+    // solo editable EOBT
+    row.children[5].querySelector('input').addEventListener('change',()=>{
+      ac.eobt=row.children[5].querySelector('input').value;
+      updateTable();
+    });
+  });
+}
+
+</script>
+
+</body>
+</html>
