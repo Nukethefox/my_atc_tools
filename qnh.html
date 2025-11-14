@@ -1,130 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<link rel="stylesheet" href="style.css">
-<meta charset="UTF-8">
-<title>TL Calculator</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-
-</head>
-<body>
-
-<div class="page">
-
-<div class="navbar">
-  <ul style="display: flex; list-style: none;">
-    <li><button class="navbutton" onclick="location.href='index.html'">HOME</button></li>
-    <li><button class="navbutton" onclick="location.href='units.html'">UNITS CONVERSION</button></li>
-    <li><button class="navbutton selected" onclick="location.href='qnh.html'">QNH & TA/TL</button></li>
-    <li><button class="navbutton" onclick="location.href='taxi_calc.html'">TAXI FLOW MANAGER</button></li>
-    <li><button class="navbutton" onclick="location.href='speed_calc.html'">TRAFFIC SPEEDS & CONFLICTS</button></li>
-    <li><button class="navbutton" onclick="location.href='traffic_sep.html'">WAKE TURBULENCE SEPARATION</button></li>
-
-  </ul>
-</div>
-
-<h1>TRANSITION LEVEL CALCULATOR</h1>
-
-<form id="QNHandTA">
-    <input type="number" id="qnh" placeholder="QNH (hPa)" required>
-    <select style="cursor:pointer;" id="transaltitude" required>
-      <option value="3000">3000</option>
-      <option value="3500">3500</option>
-      <option value="4000">4000</option>
-      <option value="4500">4500</option>
-      <option value="5000">5000</option>
-      <option value="5500">5500</option>
-      <option value="6000" selected>6000 (Spain STD)</option>
-      <option value="6500">6500</option>
-      <option value="7000">7000 (LEGR)</option>
-      <option value="7500">7500</option>
-      <option value="8000">8000 (LESU)</option>
-      <option value="8500">8500</option>
-      <option value="9000">9000</option>
-      <option value="9500">9500</option>
-      <option value="10000">10000</option>
-      <option value="10500">10500</option>
-      <option value="11000">11000</option>
-      <option value="11500">11500</option>
-      <option value="12000">12000</option>
-      <option value="12500">12500</option>
-      <option value="13000">13000 (LEMD)</option>
-      <option value="13500">13500</option>
-      <option value="14000">14000</option>
-      <option value="14500">14500</option>
-      <option value="15000">15000</option>
-      <option value="15500">15500</option>
-      <option value="16000">16000</option>
-    </select>
-    <button type="submit">Calculate</button>
-</form>
-
-<div id="resultqnh"></div>
-<p style="position: fixed; bottom: 0; color: white; font-weight: 900; background-color: red;">FOR FLIGHT SIMULATION PURPOSES ONLY!</p>
-</div>
-
-<script>
-const table = {
-  3000: [60,55,50,45,40,35],
-  3500: [65,60,55,50,45,40],
-  4000: [70,65,60,55,50,45],
-  4500: [75,70,65,60,55,50],
-  5000: [80,75,70,65,60,55],
-  5500: [85,80,75,70,65,60],
-  6000: [90,85,80,75,70,65],
-  6500: [95,90,85,80,75,70],
-  7000: [100,95,90,85,80,75],
-  7500: [105,100,95,90,85,80],
-  8000: [110,105,100,95,90,85],
-  8500: [115,110,105,100,95,90],
-  9000: [120,115,110,105,100,95],
-  9500: [125,120,115,110,105,100],
- 10000: [130,125,120,115,110,105],
- 10500: [135,130,125,120,115,110],
- 11000: [140,135,130,125,120,115],
- 11500: [145,140,135,130,125,120],
- 12000: [150,145,140,135,130,125],
- 12500: [155,150,145,140,135,130],
- 13000: [160,155,150,145,140,135],
- 13500: [165,160,155,150,145,140],
- 14000: [170,165,160,155,150,145],
- 14500: [175,170,165,160,155,150],
- 15000: [180,175,170,165,160,155],
- 15500: [185,180,175,170,165,160],
- 16000: [190,185,180,175,170,165],
-};
-
-const qnhRanges = [
-  [942.2,959.4],
-  [959.5,977.1],
-  [977.2,995.0],
-  [995.1,1013.2],
-  [1013.3,1031.6],
-  [1031.7,1050.3],
-];
-
-document.getElementById("QNHandTA").addEventListener("submit", function(e){
-  e.preventDefault();
-  const qnh = parseInt(document.getElementById("qnh").value);
-  const ta = document.getElementById("transaltitude").value;
-
-  let col = -1;
-  for(let i=0; i<qnhRanges.length; i++){
-    if(qnh >= qnhRanges[i][0] && qnh <= qnhRanges[i][1]){
-      col = i;
-      break;
-    }
-  }
-
-  let resultqnh = "Invalid QNH";
-  if(col !== -1 && table[ta]){
-    let tl = table[ta][col];
-    resultqnh = "TL " + String(tl).padStart(3,"0");
-  }
-
-  document.getElementById("resultqnh").textContent = resultqnh;
-});
-</script>
-
-</body>
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <title>TL Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <div class="page">
+      <div class="navbar">
+        <ul style="display: flex; list-style: none">
+          <li><button class="navbutton" onclick="location.href='index.html'">HOME</button></li>
+          <li><button class="navbutton" onclick="location.href='units.html'">UNITS CONVERSION</button></li>
+          <li><button class="navbutton selected"onclick="location.href='qnh.html'">TA/TL & RWY WIND</button></li>
+          <li><button class="navbutton" onclick="location.href='taxi_calc.html'">TAXI FLOW MANAGER</button></li>
+          <li><button class="navbutton" onclick="location.href='speed_calc.html'">TRAFFIC SPEEDS & CONFLICTS</button></li>
+          <li><button class="navbutton" onclick="location.href='traffic_sep.html'">TRAFFIC SEPARATION</button></li>
+        </ul>
+      </div>
+      <h1>TL CALCULATOR</h1>
+      <form id="QNHandTA">
+        <input type="number" id="qnh" placeholder="QNH (hPa)" required />
+        <select style="cursor: pointer" id="transaltitude" required>
+          <option value="3000">3000</option>
+          <option value="3500">3500</option>
+          <option value="4000">4000</option>
+          <option value="4500">4500</option>
+          <option value="5000">5000</option>
+          <option value="5500">5500</option>
+          <option value="6000" selected>6000 (Spain STD)</option>
+          <option value="6500">6500</option>
+          <option value="7000">7000 (LEGR)</option>
+          <option value="7500">7500</option>
+          <option value="8000">8000 (LESU)</option>
+          <option value="8500">8500</option>
+          <option value="9000">9000</option>
+          <option value="9500">9500</option>
+          <option value="10000">10000</option>
+          <option value="10500">10500</option>
+          <option value="11000">11000</option>
+          <option value="11500">11500</option>
+          <option value="12000">12000</option>
+          <option value="12500">12500</option>
+          <option value="13000">13000 (LEMD)</option>
+          <option value="13500">13500</option>
+          <option value="14000">14000</option>
+          <option value="14500">14500</option>
+          <option value="15000">15000</option>
+          <option value="15500">15500</option>
+          <option value="16000">16000</option>
+        </select>
+        <button type="submit">Calculate</button>
+      </form>
+      <div id="resultqnh" style="min-height: 40px"></div>
+      <hr />
+      <h1>ACTIVE RUNWAY SUGGESTION</h1>
+      <form id="windAndRunway">
+        <input type="number" id="prefered" required placeholder="Prefered RWY" style="max-width: 150px"/>
+        <input type="number" id="opposite" required placeholder="Opposite RWY" style="max-width: 150px"/>
+        <input type="number" id="direction" required placeholder="Wind direction" style="max-width: 150px"/>
+        <input type="number" id="speed" required placeholder="Wind speed" style="max-width: 150px"/>
+        <button type="submit">Calculate</button>
+      </form>
+      <div id="resultrwy" style="min-height: 40px"></div>
+      <div style="text-align: center"><p style="display: inline-block; color: white; font-weight: 900; background-color: red; text-align: center;">FOR FLIGHT SIMULATION ONLY!</p></div>
+      <div style="height: 100px"></div>
+      <p class="indextitle" style="text-align: center; font-size: 16px"><b>For bugs or suggestions</b>, you can contact me on Discord @nukethefox</p>
+      <p class="indextitle" style="text-align: center; font-size: 16px">If you find this tool useful and would like to support it, you can do so here:</p>
+      <p style="text-align: center"><a href="https://ko-fi.com/nukethefox" target="_blank"><img height="36" style="border: 0px; height: 36px" src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" border="0" alt="Buy Me a Coffee at ko-fi.com"/></a></p>
+    </div>
+    <script>
+      const table = {
+        3000: [60, 55, 50, 45, 40, 35],
+        3500: [65, 60, 55, 50, 45, 40],
+        4000: [70, 65, 60, 55, 50, 45],
+        4500: [75, 70, 65, 60, 55, 50],
+        5000: [80, 75, 70, 65, 60, 55],
+        5500: [85, 80, 75, 70, 65, 60],
+        6000: [90, 85, 80, 75, 70, 65],
+        6500: [95, 90, 85, 80, 75, 70],
+        7000: [100, 95, 90, 85, 80, 75],
+        7500: [105, 100, 95, 90, 85, 80],
+        8000: [110, 105, 100, 95, 90, 85],
+        8500: [115, 110, 105, 100, 95, 90],
+        9000: [120, 115, 110, 105, 100, 95],
+        9500: [125, 120, 115, 110, 105, 100],
+        10000: [130, 125, 120, 115, 110, 105],
+        10500: [135, 130, 125, 120, 115, 110],
+        11000: [140, 135, 130, 125, 120, 115],
+        11500: [145, 140, 135, 130, 125, 120],
+        12000: [150, 145, 140, 135, 130, 125],
+        12500: [155, 150, 145, 140, 135, 130],
+        13000: [160, 155, 150, 145, 140, 135],
+        13500: [165, 160, 155, 150, 145, 140],
+        14000: [170, 165, 160, 155, 150, 145],
+        14500: [175, 170, 165, 160, 155, 150],
+        15000: [180, 175, 170, 165, 160, 155],
+        15500: [185, 180, 175, 170, 165, 160],
+        16000: [190, 185, 180, 175, 170, 165],
+      };
+      const qnhRanges = [
+        [942.2, 959.4],
+        [959.5, 977.1],
+        [977.2, 995.0],
+        [995.1, 1013.2],
+        [1013.3, 1031.6],
+        [1031.7, 1050.3],
+      ];
+      document
+        .getElementById("QNHandTA")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const qnh = parseInt(document.getElementById("qnh").value);
+          const ta = document.getElementById("transaltitude").value;
+          let col = -1;
+          for (let i = 0; i < qnhRanges.length; i++) {
+            if (qnh >= qnhRanges[i][0] && qnh <= qnhRanges[i][1]) {
+              col = i;
+              break;
+            }
+          }
+          let resultqnh = "Invalid QNH";
+          if (col !== -1 && table[ta]) {
+            let tl = table[ta][col];
+            resultqnh = "TL " + String(tl).padStart(3, "0");
+          }
+          document.getElementById("resultqnh").textContent = resultqnh;
+        });
+      document
+        .getElementById("windAndRunway")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const res = document.getElementById("resultrwy");
+          const prefRaw = document.getElementById("prefered").value;
+          const oppRaw = document.getElementById("opposite").value;
+          const dirRaw = document.getElementById("direction").value;
+          const spdRaw = document.getElementById("speed").value;
+          const prefered = parseInt(prefRaw, 10);
+          const opposite = parseInt(oppRaw, 10);
+          const windDir = parseFloat(dirRaw);
+          const windSpd = parseFloat(spdRaw);
+          if (
+            Number.isNaN(prefered) ||
+            prefered < 1 ||
+            prefered > 36 ||
+            Number.isNaN(opposite) ||
+            opposite < 1 ||
+            opposite > 36 ||
+            Number.isNaN(windDir) ||
+            windDir < 0 ||
+            windDir > 360 ||
+            Number.isNaN(windSpd) ||
+            windSpd < 0
+          ) {
+            res.innerText = "ERROR: input";
+            return;
+          }
+          const runwayHeading = prefered === 36 ? 360 : prefered * 10;
+          let diff = windDir - runwayHeading;
+          diff = ((diff + 180 + 360) % 360) - 180; 
+          const diffRad = (diff * Math.PI) / 180;
+          const headwind = windSpd * Math.cos(diffRad); 
+          const crosswind = windSpd * Math.sin(diffRad); 
+          let recommended;
+          if (windSpd < 8) {
+            recommended = prefered;
+          } else {
+            recommended = diff >= -90 && diff <= 90 ? prefered : opposite;
+          }
+          let theoreticalOpp = (prefered + 18) % 36;
+          if (theoreticalOpp === 0) theoreticalOpp = 36;
+          const fmt = (n, d = 1) => {
+            if (!isFinite(n)) return "NaN";
+            return (Math.round(n * Math.pow(10, d)) / Math.pow(10, d)).toFixed(
+              d
+            );
+          };
+          const rwyDisplay = recommended.toString().padStart(2, "0");
+          const headOrTail = headwind >= 0 ? "Headwind" : "Tailwind";
+          const headwindValue = Math.abs(headwind);
+          const crossDir =
+            crosswind >= 0 ? "Right crosswind" : "Left crosswind";
+          const crosswindValue = Math.abs(crosswind);
+          res.innerHTML =
+            "Recommended RWY: " +
+            rwyDisplay +
+            "\n" +
+            " / " +
+            headOrTail +
+            ": " +
+            fmt(headwindValue) +
+            " kt / " +
+            crossDir +
+            ": " +
+            fmt(crosswindValue) +
+            " kt";
+        });
+    </script>
+  </body>
 </html>
