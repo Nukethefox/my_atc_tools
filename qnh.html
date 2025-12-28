@@ -3,7 +3,7 @@
   <head>
     <link rel="stylesheet" href="style.css" />
     <meta charset="UTF-8" />
-    <title>TL Calculator</title>
+    <title>TL & Wind Calculator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
@@ -53,7 +53,7 @@
         <button type="submit">Calculate</button>
       </form>
       <div id="resultqnh" style="min-height: 40px"></div>
-      <hr />
+      <hr style="border: dashed;" />
       <h1>ACTIVE RUNWAY SUGGESTION</h1>
       <form id="windAndRunway">
         <input type="number" id="prefered" required placeholder="Prefered RWY" style="max-width: 150px"/>
@@ -62,10 +62,10 @@
         <input type="number" id="speed" required placeholder="Wind speed" style="max-width: 150px"/>
         <button type="submit">Calculate</button>
       </form>
-      <div id="resultrwy" style="min-height: 40px"></div>
+      <div id="resultrwy" style="min-height: 110px"></div>
       <div style="text-align: center"><p style="display: inline-block; color: white; font-weight: 900; background-color: red; text-align: center;">FOR FLIGHT SIMULATION ONLY!</p></div>
       <div style="height: 100px"></div>
-      <p class="indextitle" style="text-align: center; font-size: 16px"><b>For bugs or suggestions</b>, you can contact me on Discord @nukethefox</p>
+      <p class="indextitle" style="text-align: center; font-size: 16px"><b>For bugs or suggestions</b>, you can contact me on Discord @nukethefox or via <a href="https://t.me/Nuke_the_fox" target="_blank">telegram</a></p>
       <p class="indextitle" style="text-align: center; font-size: 16px">If you find this tool useful and would like to support it, you can do so here:</p>
       <p style="text-align: center"><a href="https://ko-fi.com/nukethefox" target="_blank"><img height="36" style="border: 0px; height: 36px" src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" border="0" alt="Buy Me a Coffee at ko-fi.com"/></a></p>
     </div>
@@ -182,11 +182,7 @@
           const crossDir =
             crosswind >= 0 ? "Right crosswind" : "Left crosswind";
           const crosswindValue = Math.abs(crosswind);
-          res.innerHTML =
-            "Recommended RWY: " +
-            rwyDisplay +
-            "\n" +
-            " / " +
+          res.innerHTML = "<b>Recommended RWY: " + rwyDisplay + "</b>" + "\n" + " <br> " + "Wind on preffered:" + "<br>" + 
             headOrTail +
             ": " +
             fmt(headwindValue) +
