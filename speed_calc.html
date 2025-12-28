@@ -1,358 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <link rel="stylesheet" href="style.css">
-  <title>Speed Calculators</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-</head>
-<body style="padding-bottom: 40px;">
-  <div class="page">
-
-    <div class="navbar">
-      <ul style="display: flex; list-style: none;">
-        <li><button class="navbutton" onclick="location.href='index.html'">HOME</button></li>
-        <li><button class="navbutton" onclick="location.href='units.html'">UNITS CONVERSION</button></li>
-        <li><button class="navbutton" onclick="location.href='qnh.html'">QNH & TA/TL</button></li>
-        <li><button class="navbutton" onclick="location.href='taxi_calc.html'">TAXI FLOW MANAGER</button></li>
-        <li><button class="navbutton selected" onclick="location.href='speed_calc.html'">TRAFFIC SPEEDS & CONFLICTS</button></li>
-        <li><button class="navbutton" onclick="location.href='traffic_sep.html'">WAKE TURBULENCE SEPARATION</button></li>
-      </ul>
-    </div>
-
-    <h1>TRAFFIC SPEEDS & CONFLICTS CALCULATOR</h1>
-
-    <p class="warning-box1" style="text-align: center;">
-      <b>⚠ Remember!</b> These calculators use constant speed, and no wind taken into account.<br>
-      All speed calculations are estimations and predictions.<br>
-      Use these calculations as just suggestions on your decision making.
-    </p>
-
-    <!-- SECTION: Single traffic -->
-    <div class="sectionspeed">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="style.css">
+    <title>Speed Calculators</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+  </head>
+  <body style="padding-bottom: 40px;">
+    <div class="page">
+      <div class="navbar">
+        <ul style="display: flex; list-style: none;">
+          <li><button class="navbutton" onclick="location.href='index.html'">HOME</button></li>
+          <li><button class="navbutton" onclick="location.href='units.html'">UNITS CONVERSION</button></li>
+          <li><button class="navbutton" onclick="location.href='qnh.html'">TA/TL & RWY WIND</button></li>
+          <li><button class="navbutton" onclick="location.href='taxi_calc.html'">TAXI FLOW MANAGER</button></li>
+          <li><button class="navbutton selected" onclick="location.href='speed_calc.html'">TRAFFIC SPEEDS & CONFLICTS</button></li>
+          <li><button class="navbutton" onclick="location.href='traffic_sep.html'">TRAFFIC SEPARATION</button></li>
+        </ul>
+      </div>
+      <h1>TRAFFIC SPEEDS & CONFLICTS CALCULATOR</h1>
+      <p class="warning-box1" style="text-align: center;"><b>⚠ Remember!</b> These calculators use constant speed, and no wind taken into account.<br> All speed calculations are estimations.<br> Use these calculations as just suggestions on your decision making.</p>
+      <div class="sectionspeed">
       <p class="sectionspeed-title"><span class="arrow">▶</span> Single traffic</p>
       <div class="collapsible-content hidden">
         <div class="calc-grid">
           <div class="calculator">
             <p class="indextitle">ETA Calculator</p>
-            <div class="field">
-              <label>Speed (KT)</label>
-              <input class="speedinput" id="st1_speed" type="number" min="0" step="1">
-            </div>
-            <div class="field">
-              <label>Distance (NM)</label>
-              <input class="speedinput" id="st1_dist" type="number" min="0" step="0.1">
-            </div>
-            <div class="row-btn">
-              <button class="speedbutton" onclick="calcST1()">Calculate</button>
-              <button class="speedbutton" onclick="clearST1()">Clear</button>
-            </div>
+            <div class="field"><label>Speed (KT)</label><input class="speedinput" id="st1_speed" type="number" min="0" step="1"></div>
+            <div class="field"><label>Distance (NM)</label><input class="speedinput" id="st1_dist" type="number" min="0" step="0.1"></div>
+            <div class="row-btn"><button class="speedbutton" onclick="calcST1()">Calculate</button><button class="speedbutton" onclick="clearST1()">Clear</button></div>
             <div id="st1_result" class="resultspeed"></div>
           </div>
-
           <div class="calculator">
             <p class="indextitle">Distance Calculator</p>
-            <div class="field">
-              <label>Speed (KT)</label>
-              <input class="speedinput" id="st2_speed" type="number" min="0" step="1">
-            </div>
-            <div class="field">
-              <label>Time (MM:SS)</label>
-              <input class="speedinput" id="st2_time_min" type="number" step="1">
-              <input class="speedinput" id="st2_time_sec" type="number" step="1" max="59">
-            </div>
-            <div class="row-btn">
-              <button class="speedbutton" onclick="calcST2()">Calculate</button>
-              <button class="speedbutton" onclick="clearST2()">Clear</button>
-            </div>
+            <div class="field"><label>Speed (KT)</label><input class="speedinput" id="st2_speed" type="number" min="0" step="1"></div>
+            <div class="field"><label>Time (MM:SS)</label><input class="speedinput" id="st2_time_min" type="number" step="1"><input class="speedinput" id="st2_time_sec" type="number" step="1" max="59"></div>
+            <div class="row-btn"><button class="speedbutton" onclick="calcST2()">Calculate</button><button class="speedbutton" onclick="clearST2()">Clear</button></div>
             <div id="st2_result" class="resultspeed"></div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- SECTION: Two traffic same route -->
     <div class="sectionspeed">
       <p class="sectionspeed-title"><span class="arrow">▶</span> Two traffic on the same route</p>
       <div class="collapsible-content hidden">
-        <p class="indextext" style="text-align: center;">
-          Use these calculators if two traffic are flying <b>the same route & the same altitude</b> and the <b>2nd is faster</b>.<br>
-          For example, for two traffic approaching using the same STAR.
-        </p>
+        <p class="indextext" style="text-align: center;">Use these calculators if two traffic are flying <b>the same route & the same altitude</b>, and the <b>2nd is faster</b>.<br> For example, for two traffic approaching using the same STAR.</p>
         <hr>
-
-        
-
-<!-- === ROW 1: two columns (Loss + Speed Reduction with sub-columns) === -->
-<div class="calc-grid" style="grid-template-columns: 1fr 1fr; align-items:start;">
-
-  <!-- COL 1: Loss of separation (FORM + RESULT, juntos y pegados) -->
-  <div class="calculator">
-    <p class="indextitle">Loss of separation prediction</p>
-    <div class="field">
-      <label>1st traffic speed (KT)</label>
-      <input class="speedinput" id="ls_speed1" type="number" min="0" step="1">
-    </div>
-    <div class="field">
-      <label>2nd traffic speed (KT)</label>
-      <input class="speedinput" id="ls_speed2" type="number" min="0" step="1">
-    </div>
-    <div class="field">
-      <label>Initial separation (NM)</label>
-      <input class="speedinput" id="ls_sep" type="number" min="0" step="0.1">
-    </div>
-    <div class="row-btn">
-      <button class="speedbutton" onclick="calcLossSep()">Calculate</button>
-      <button class="speedbutton" onclick="clearLossSep()">Clear</button>
-    </div>
-
-    <!-- Resultado pegado al formulario, con altura reservada -->
-    <div style="min-height: 180px; padding-top:8px;">
-      <div id="ls_result" class="result" style="margin-top: 6px;"></div>
-      <div id="ls_graphic" class="graphic"></div>
-    </div>
-  </div>
-
-  <!-- COL 2: Speed reduction (título ancho + sub-columns para main form y thresholds) -->
-  <div class="calculator">
-    <p class="indextitle">Required speed reduction for 2nd traffic</p>
-
-    <!-- Subgrid interno 1fr 1fr -->
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px;">
-
-      <!-- SUB-COL LEFT: Main form -->
-      <div>
-        <div class="field">
-          <label>1st traffic distance to waypoint (NM)</label>
-          <input class="speedinput" id="sr_dist" type="number" min="0" step="0.1">
+        <div class="calc-grid" style="grid-template-columns: 1fr 1fr; align-items:start;">
+          <div class="calculator">
+            <p class="indextitle">Loss of separation prediction</p>
+            <div class="field"><label>1st traffic speed (KT)</label><input class="speedinput" id="ls_speed1" type="number" min="0" step="1"></div>
+            <div class="field"><label>2nd traffic speed (KT)</label><input class="speedinput" id="ls_speed2" type="number" min="0" step="1"></div>
+            <div class="field"><label>Initial separation (NM)</label><input class="speedinput" id="ls_sep" type="number" min="0" step="0.1"></div>
+            <div class="row-btn"><button class="speedbutton" onclick="calcLossSep()">Calculate</button><button class="speedbutton" onclick="clearLossSep()">Clear</button></div>
+            <div style="min-height: 180px; padding-top:8px;"><div id="ls_result" class="result" style="margin-top: 6px;"></div><div id="ls_graphic" class="graphic"></div></div>
+          </div>
+          <div class="calculator">
+            <p class="indextitle">Required speed reduction for 2nd traffic</p>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px;">
+              <div>
+                <div class="field"><label>1st traffic distance to waypoint (NM)</label><input class="speedinput" id="sr_dist" type="number" min="0" step="0.1"></div>
+                <div class="field"><label>1st traffic speed (KT)</label><input class="speedinput" id="sr_speed1" type="number" min="0" step="1"></div>
+                <div class="field"><label>2nd traffic speed (KT)</label><input class="speedinput" id="sr_speed2" type="number" min="0" step="1"></div>
+                <div class="field"><label>Initial separation (NM)</label><input class="speedinput" id="sr_sep" type="number" min="0" step="0.1"></div>
+                <div class="field"><label>Desired separation at waypoint (minutes)</label><input class="speedinput" id="sr_desired" type="number" min="0" step="0.01"></div>
+              </div>
+              <div>
+                <div class="field"><label>Maximum allowed reduction (KT)</label><input class="speedinput" id="sr_max_reduction" type="number" min="0" step="5" value="40"></div>
+                <div class="field"><label>Minimum practical speed (KT)</label><input class="speedinput" id="sr_min_v2" type="number" min="0" step="5" value="200"></div>
+                <div class="field"><label>Maximum speed difference between 1st and 2nd (KT)</label><input class="speedinput" id="sr_max_below_lead" type="number" min="0" step="5" value="25"></div>
+              </div>
+              <div class="row-btn" style="grid-column: 1 / -1;"><button class="speedbutton" onclick="calcSpeedReduction()">Calculate</button><button class="speedbutton" onclick="clearSpeedReduction()">Clear</button></div>
+              <div class="calculator" style="grid-column: 1 / -1; min-height: 240px; padding-top:8px;">
+                <div id="sr_result" class="result"></div>
+                <div id="sr_extra" class="result"></div>
+                <div id="sr_extra2" class="result"></div>
+                <div id="sr_extra3" class="result"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="field">
-          <label>1st traffic speed (KT)</label>
-          <input class="speedinput" id="sr_speed1" type="number" min="0" step="1">
-        </div>
-        <div class="field">
-          <label>2nd traffic speed (KT)</label>
-          <input class="speedinput" id="sr_speed2" type="number" min="0" step="1">
-        </div>
-        <div class="field">
-          <label>Initial separation (NM)</label>
-          <input class="speedinput" id="sr_sep" type="number" min="0" step="0.1">
-        </div>
-        <div class="field">
-          <label>Desired separation at waypoint (minutes)</label>
-          <input class="speedinput" id="sr_desired" type="number" min="0" step="0.01">
+        <hr>
+        <div class="calc-grid" style="grid-template-columns: 1fr 1fr; align-items:start;">
+          <div class="calculator">
+            <p class="indextitle">Separation after distance traveled at constant speeds</p>
+            <div class="field"><label>1st traffic speed (KT)</label><input class="speedinput" id="sa_speed1" type="number" min="0" step="1"></div>
+            <div class="field"><label>2nd traffic speed (KT)</label><input class="speedinput" id="sa_speed2" type="number" min="0" step="1"></div>
+            <div class="field"><label>Initial separation (NM)</label><input class="speedinput" id="sa_sep" type="number" min="0" step="0.1"></div>
+            <div class="field"><label>Distance travelled (NM)</label><input class="speedinput" id="sa_dist" type="number" min="0" step="0.1"></div>
+            <div class="row-btn"><button class="speedbutton" onclick="calcSeparationAfter()">Calculate</button><button class="speedbutton" onclick="clearSeparationAfter()">Clear</button></div>
+          </div>
+          <div class="calculator" style="min-height: 170px; padding-top:8px;">
+            <div id="sa_result" class="resultspeed"></div>
+          </div>
         </div>
       </div>
-
-      <!-- SUB-COL RIGHT: Thresholds (optional) -->
-      <div>
-        <div class="field">
-          <label>Maximum allowed reduction (KT)</label>
-          <input class="speedinput" id="sr_max_reduction" type="number" min="0" step="5" value="40">
-        </div>
-        <div class="field">
-          <label>Minimum practical speed (KT)</label>
-          <input class="speedinput" id="sr_min_v2" type="number" min="0" step="5" value="200">
-        </div>
-        <div class="field">
-          <label>Maximum speed difference between 1st and 2nd (KT)</label>
-          <input class="speedinput" id="sr_max_below_lead" type="number" min="0" step="5" value="25">
-        </div>
-      </div>
-
-      <!-- Botones (span 2 columnas) -->
-      <div class="row-btn" style="grid-column: 1 / -1;">
-        <button class="speedbutton" onclick="calcSpeedReduction()">Calculate</button>
-        <button class="speedbutton" onclick="clearSpeedReduction()">Clear</button>
-      </div>
-
-      <!-- Área de resultados (span 2 columnas, altura reservada) -->
-      <div class="calculator" style="grid-column: 1 / -1; min-height: 240px; padding-top:8px;">
-        <div id="sr_result" class="result"></div>
-        <div id="sr_extra" class="result"></div>
-        <div id="sr_extra2" class="result"></div>
-        <div id="sr_extra3" class="result"></div>
-      </div>
-
     </div>
-  </div>
-</div>
-
-<hr>
-
-<!-- === ROW 2: two columns (form + reserved result) === -->
-<div class="calc-grid" style="grid-template-columns: 1fr 1fr; align-items:start;">
-
-  <!-- COL LEFT: Separation after distance (FORM ONLY) -->
-  <div class="calculator">
-    <p class="indextitle">Separation after distance traveled at constant speeds</p>
-    <div class="field">
-      <label>1st traffic speed (KT)</label>
-      <input class="speedinput" id="sa_speed1" type="number" min="0" step="1">
-    </div>
-    <div class="field">
-      <label>2nd traffic speed (KT)</label>
-      <input class="speedinput" id="sa_speed2" type="number" min="0" step="1">
-    </div>
-    <div class="field">
-      <label>Initial separation (NM)</label>
-      <input class="speedinput" id="sa_sep" type="number" min="0" step="0.1">
-    </div>
-    <div class="field">
-      <label>Distance travelled (NM)</label>
-      <input class="speedinput" id="sa_dist" type="number" min="0" step="0.1">
-    </div>
-    <div class="row-btn">
-      <button class="speedbutton" onclick="calcSeparationAfter()">Calculate</button>
-      <button class="speedbutton" onclick="clearSeparationAfter()">Clear</button>
-    </div>
-  </div>
-
-  <!-- COL RIGHT: Separation after distance RESULT AREA -->
-  <div class="calculator" style="min-height: 170px; padding-top:8px;">
-    <div id="sa_result" class="resultspeed"></div>
-  </div>
-</div>
-
-
-
-
-
-
-
-      </div>
-    </div>
-
-    <p style="position: fixed; bottom: 0; color: white; font-weight: 900; background-color: red;">
-      FOR FLIGHT SIMULATION PURPOSES ONLY!
-    </p>
-
-  </div>
-
-<script>
-  // =========================
-  // Utils (shared helpers)
-  // =========================
-
-  // Minutes (decimal) -> "MM:SS" (caps NaN/Inf and negatives)
-  function toMinSecStr(minDecimal) {
-    if (!Number.isFinite(minDecimal)) return '--:--';
-    const m = Math.max(0, minDecimal);
-    const totalSec = Math.round(m * 60);
-    const min = Math.floor(totalSec / 60);
-    const sec = totalSec % 60;
-    return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
-  }
-
-  // Round down to nearest 10; keep at least 1 kt for tiny values
-  function roundDown5(x) {
-    if (!Number.isFinite(x)) return NaN;
-    const r = Math.floor(x / 5) * 5;
-    if (r >= 5) return r;
-    return Math.max(1, Math.floor(x));
-  }
-
-  // =========================
-  // Collapsible sections
-  // =========================
-  document.querySelectorAll('.sectionspeed-title').forEach((title) => {
-    title.addEventListener('click', () => {
-      const content = title.nextElementSibling;
-      content.classList.toggle('hidden');
-      const arrow = title.querySelector('.arrow');
-      arrow.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(90deg)';
-    });
-  });
-
-  // =========================
-  // SECTION 1: Single traffic
-  // =========================
-
-  function calcST1() {
-    const v = parseFloat(document.getElementById('st1_speed').value);
-    const d = parseFloat(document.getElementById('st1_dist').value);
-    const res = document.getElementById('st1_result');
-    res.textContent = '';
-
-    if (!(v > 0) || !(d >= 0)) {
-      res.innerHTML = '⚠ Please enter valid numbers.';
-      return;
+    <div style="text-align: center;"><p style="display: inline-block; color: white; font-weight: 900; background-color: red; text-align: center;">FOR FLIGHT SIMULATION ONLY!</p></div>
+    <div style="height: 50px;"></div>
+    <p class="indextitle" style="text-align: center; font-size: 16px"><b>For bugs or suggestions</b>, you can contact me on Discord @nukethefox or via <a href="https://t.me/Nuke_the_fox" target="_blank">telegram</a></p>
+    <p class="indextitle" style="text-align: center; font-size: 16px">If you find this tool useful and would like to support it, you can do so here:</p>
+    <p style="text-align: center"><a href="https://ko-fi.com/nukethefox" target="_blank"><img height="36" style="border: 0px; height: 36px" src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" border="0" alt="Buy Me a Coffee at ko-fi.com"/></a></p>
+    <script>
+    function toMinSecStr(minDecimal) {
+      if (!Number.isFinite(minDecimal)) return '--:--';
+      const m = Math.max(0, minDecimal);
+      const totalSec = Math.round(m * 60);
+      const min = Math.floor(totalSec / 60);
+      const sec = totalSec % 60;
+      return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
     }
-
-    const t = (d / v) * 60;
-    res.innerHTML = `ETA: ${toMinSecStr(t)} minutes`;
-  }
-
-  function clearST1() {
-    document.getElementById('st1_speed').value = '';
-    document.getElementById('st1_dist').value = '';
-    document.getElementById('st1_result').textContent = '';
-  }
-
+    function roundDown5(x) {
+      if (!Number.isFinite(x)) return NaN;
+      const r = Math.floor(x / 5) * 5;
+      if (r >= 5) return r;
+      return Math.max(1, Math.floor(x));}
+      document.querySelectorAll('.sectionspeed-title').forEach((title) => {title.addEventListener('click', () => {
+        const content = title.nextElementSibling;
+        content.classList.toggle('hidden');
+        const arrow = title.querySelector('.arrow');
+        arrow.style.transform = content.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(90deg)';
+      });
+    });
+    function calcST1() {
+      const v = parseFloat(document.getElementById('st1_speed').value);
+      const d = parseFloat(document.getElementById('st1_dist').value);
+      const res = document.getElementById('st1_result');
+      res.textContent = '';
+      if (!(v > 0) || !(d >= 0)) {
+        res.innerHTML = '⚠ Please enter valid numbers.';
+        return;
+      }
+      const t = (d / v) * 60;
+      res.innerHTML = `ETA: ${toMinSecStr(t)} minutes`;
+    }
+    function clearST1() {
+      document.getElementById('st1_speed').value = '';
+      document.getElementById('st1_dist').value = '';
+      document.getElementById('st1_result').textContent = '';
+    }
   function calcST2() {
     const v = parseFloat(document.getElementById('st2_speed').value);
     const min = parseInt(document.getElementById('st2_time_min').value) || 0;
     const sec = parseInt(document.getElementById('st2_time_sec').value) || 0;
     const out = document.getElementById('st2_result');
     out.textContent = '';
-
     if (!(v > 0)) {
       out.innerHTML = '⚠ Please enter valid numbers.';
       return;
     }
-
     const tmin = min + sec / 60;
-    const d = v * (tmin / 60); // NM
+    const d = v * (tmin / 60); 
     out.innerHTML = `Distance: ${d.toFixed(2)} NM`;
   }
-
   function clearST2() {
     document.getElementById('st2_speed').value = '';
     document.getElementById('st2_time_min').value = '';
     document.getElementById('st2_time_sec').value = '';
     document.getElementById('st2_result').textContent = '';
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // ============================================
-  // SECTION 2: Two traffic on the same route
-  // ============================================
-
   function calcLossSep() {
-    const v11 = parseFloat(document.getElementById('ls_speed1').value); // kts
-    const v12 = parseFloat(document.getElementById('ls_speed2').value); // kts
-    const sep1 = parseFloat(document.getElementById('ls_sep').value);   // NM
+    const v11 = parseFloat(document.getElementById('ls_speed1').value); 
+    const v12 = parseFloat(document.getElementById('ls_speed2').value); 
+    const sep1 = parseFloat(document.getElementById('ls_sep').value);   
     const res = document.getElementById('ls_result');
     const graph = document.getElementById('ls_graphic');
-
     res.textContent = '';
     graph.innerHTML = '';
-
     if (!(v11 > 0) || !(v12 > 0) || !(sep1 >= 0)) {
       res.innerHTML = '<div style="font-size:24px;">⚠ Please enter valid numbers.</div>';
       return;
     }
-
-    // ===============================
-    // 1) Mismas velocidades (casos 1 y 2)
-    // ===============================
     if (v12 === v11) {
       res.innerHTML = `<div class="info-box">Both traffic have equal speed, separation will not change.</div>`;
       if (sep1 <= 3) {
@@ -362,14 +180,8 @@
       }
       return;
     }
-
-    // =======================================
-    // 2) 2º más lento (casos 3, 4 y 5)
-    // =======================================
     if (v12 < v11) {
-      const relSpeed = v11 - v12; // kts
-
-      // caso 5: ya por debajo de 3/5 NM -> aumentará, pero avisar por estar bajo mínimos
+      const relSpeed = v11 - v12; 
       if (sep1 <= 3) {
         res.innerHTML = `<div class="info-box">Separation is expected to increase (1st traffic faster than 2nd).</div>`;
         res.innerHTML += `<div class="warning-box2"><strong>⚠ SEPARATION &lt; 3 NM!</div>`;
@@ -380,41 +192,29 @@
         res.innerHTML += `<div class="warning-box1"><strong>⚠ SEPARATION &lt; 5 NM!</div>`;
         return;
       }
-
-      // caso 3: >=10 NM => solo informar que aumentará
       if (sep1 >= 5) {
         res.innerHTML = '<div class="info-box">Separation is expected to increase (1st traffic faster than 2nd).</div>';
         return;
       }
-
     }
-
 if (v12 > v11) {
-  // Cabecera + avisos de separación actual (NO hacemos return)
   const alertsHtml = [];
   if (sep1 <= 3) {
     alertsHtml.push(`<div class="warning-box2"><strong>⚠ SEPARATION &lt; 3 NM!</strong></div>`);
   } else if (sep1 <= 5) {
     alertsHtml.push(`<div class="warning-box1"><strong>⚠ SEPARATION &lt; 5 NM!</strong></div>`);
   }
-
   res.innerHTML = `
     <div class="warning-box1"><b>⚠ 2nd traffic faster than 1st!</b> <br> Graphic shows how long until loss of separation (estimation)</div>
     ${alertsHtml.join('')}
   `;
-
-  // Tasa de cierre
-  const closureRate = (v12 - v11) / 60; // NM/min
+  const closureRate = (v12 - v11) / 60; 
   if (!(closureRate > 0) || !Number.isFinite(closureRate)) {
     res.innerHTML += '<div class="warning-box1">⚠ Invalid closing rate. Check inputs.</div>';
     return;
   }
-
-  // Tiempos (pueden ser ≤ 0 si ya están por debajo de 5/3 NM)
-  const t51 = (sep1 - 5) / closureRate; // min to 5 NM
-  const t31 = (sep1 - 3) / closureRate; // min to 3 NM
-
-  // 👉 Pintar SIEMPRE el gráfico (aunque t51/t31 ≤ 0); toMinSecStr() mostrará "00:00"
+  const t51 = (sep1 - 5) / closureRate; 
+  const t31 = (sep1 - 3) / closureRate; 
   graph.innerHTML = `
     <div class="air-icons">▲ 1st traffic</div>
     <div class="sep-line" style="width:100%">
@@ -429,8 +229,6 @@ if (v12 > v11) {
     <div style="height:8px"></div>
     <div class="air-icons">▲ 2nd traffic</div>
   `;
-
-  // Preavisos < 2 minutos (solo si el tiempo es > 0 y ≤ 2)
   const prealerts = [];
   if (sep1 > 5 && Number.isFinite(t51) && t51 > 0 && t51 <= 2) {
     prealerts.push(`<div class="warning-box1"><strong>⚠ WARNING!</strong> Less than 2 minutes to a possible separation conflict (5 NM).</div>`);
@@ -443,7 +241,6 @@ if (v12 > v11) {
   }
 }
 }
-
   function clearLossSep() {
     document.getElementById('ls_speed1').value = '';
     document.getElementById('ls_speed2').value = '';
@@ -451,69 +248,36 @@ if (v12 > v11) {
     document.getElementById('ls_result').textContent = '';
     document.getElementById('ls_graphic').innerHTML = '';
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function calcSpeedReduction() {
   const MAX_REDUCTION_KT  = Math.max(0, parseFloat(document.getElementById('sr_max_reduction')?.value) || 40);
   const MIN_V2_PRACTICAL  = Math.max(0, parseFloat(document.getElementById('sr_min_v2')?.value) || 200);
   const MAX_BELOW_LEAD_KT = Math.max(0, parseFloat(document.getElementById('sr_max_below_lead')?.value) || 25);
-
   try {
-    const dist    = parseFloat(document.getElementById('sr_dist').value);     // NM hasta el waypoint (1º tráfico)
-    const v1      = parseFloat(document.getElementById('sr_speed1').value);   // kt (1º)
-    const v2      = parseFloat(document.getElementById('sr_speed2').value);   // kt (2º actual)
-    const sep0    = parseFloat(document.getElementById('sr_sep').value);      // NM separación inicial
-    const desired = parseFloat(document.getElementById('sr_desired').value);  // min separación deseada en el FIX
-
-    const out    = document.getElementById('sr_result');   // mensaje principal
-    const extra  = document.getElementById('sr_extra');    // bloques secundarios
+    const dist    = parseFloat(document.getElementById('sr_dist').value);     
+    const v1      = parseFloat(document.getElementById('sr_speed1').value);   
+    const v2      = parseFloat(document.getElementById('sr_speed2').value);   
+    const sep0    = parseFloat(document.getElementById('sr_sep').value);      
+    const desired = parseFloat(document.getElementById('sr_desired').value); 
+    const out    = document.getElementById('sr_result');   
+    const extra  = document.getElementById('sr_extra');    
     const extra2 = document.getElementById('sr_extra2');
     const extra3 = document.getElementById('sr_extra3');
-
     out.textContent = '';
     extra.textContent = '';
     extra2.textContent = '';
     extra3.textContent = '';
-
     if (!Number.isFinite(dist) || !Number.isFinite(v1) || !Number.isFinite(v2) ||
         !Number.isFinite(sep0) || !Number.isFinite(desired) ||
         v1 <= 0 || v2 <= 0 || dist < 0 || sep0 < 0 || desired < 0) {
       out.innerHTML = '<div style="font-size:24px;">⚠ Please enter valid numbers.</div>';
       return;
     }
-
-    const T1 = (dist * 60) / v1;                // min hasta waypoint del 1º
-    const T2 = ((dist + sep0) * 60) / v2;       // min hasta waypoint del 2º
-    const sepTimeAtFix = T2 - T1;               // min separación en el FIX
-    const currentSepMin = (sep0 * 60) / v1;     // min separación actual (referencia al 1º)
-    const v2reqExact = ((dist + sep0) * 60) / (T1 + desired); // kt exactos
-    const v2new = roundDown5(v2reqExact);      // kt redondeados
+    const T1 = (dist * 60) / v1;                
+    const T2 = ((dist + sep0) * 60) / v2;       
+    const sepTimeAtFix = T2 - T1;               
+    const currentSepMin = (sep0 * 60) / v1;     
+    const v2reqExact = ((dist + sep0) * 60) / (T1 + desired); 
+    const v2new = roundDown5(v2reqExact);      
     const reduction = v2 - v2new;
     const minAllowed = Math.max(MIN_V2_PRACTICAL, v1 - MAX_BELOW_LEAD_KT);
     const reductionNotApplicable = (reduction > MAX_REDUCTION_KT) || (v2new < minAllowed);
@@ -525,29 +289,19 @@ function calcSpeedReduction() {
       }
       return '';
     };
-
-    function buildNotApplicableReasons({ v1, v2, v2new, v2reqExact, reduction, 
-                                     MAX_REDUCTION_KT, MIN_V2_PRACTICAL, MAX_BELOW_LEAD_KT }) {
+    function buildNotApplicableReasons({ v1, v2, v2new, v2reqExact, reduction, MAX_REDUCTION_KT, MIN_V2_PRACTICAL, MAX_BELOW_LEAD_KT }) {
   const reasons = [];
-  const leadFloor = v1 - MAX_BELOW_LEAD_KT;         // mínimo por “no ir >X kt por debajo del líder”
+  const leadFloor = v1 - MAX_BELOW_LEAD_KT;         
   const minAllowed = Math.max(MIN_V2_PRACTICAL, leadFloor);
-
-  // 1) Reducción excesiva
   if (reduction > MAX_REDUCTION_KT) {
     reasons.push(`Speed reduction too big! Recommended reduction (↓${reduction.toFixed(0)} kt) exceeds maximum allowed reduction (${MAX_REDUCTION_KT} kt).`);
   }
-
-  // 2) Mínimo práctico absoluto
   if (v2new < MIN_V2_PRACTICAL) {
     reasons.push(`Traffic is already slow! (Minimum practical speed is set to ${MIN_V2_PRACTICAL} kt).`);
   }
-
-  // 3) Demasiado por debajo del líder
   if (v2new < leadFloor) {
     reasons.push(`Speed reduction too big! More than ${MAX_BELOW_LEAD_KT} kt of difference below the 1st traffic.`);
   }
-
-  // Devuelve HTML en lista
   return `
     <ul style="margin:8px 0 0 18px; padding:0;">
       ${reasons.map(r => `<li>${r}</li>`).join('')}
@@ -558,35 +312,20 @@ const reasonsHTML = buildNotApplicableReasons({
   v1, v2, v2new, v2reqExact, reduction,
   MAX_REDUCTION_KT, MIN_V2_PRACTICAL, MAX_BELOW_LEAD_KT
 });
-
-
-    // =========================
-    // Caso A: v2 < v1 (2º más lento) → separación tiende a AUMENTAR
-    // =========================
     if (v2 < v1) {
-      // Info siempre
       out.innerHTML = `<div class="info-box">Separation is expected to increase (1st traffic faster than 2nd).</div>`;
-
-      // Avisos <5/<3 NM (sin instrucciones HOLD/HDG/ALT)
       const alerts = showSepDistanceAlerts();
       if (alerts) extra.innerHTML = alerts;
-
-      // Priorizar separación deseada en el FIX: comprobar sepTimeAtFix
       if (!Number.isFinite(T1) || !Number.isFinite(T2)) {
         extra2.innerHTML = `<div class="warning-box1">⚠ Error (invalid time). Check inputs.</div>`;
         return;
       }
-
       if (sepTimeAtFix < desired) {
-        // Aviso de que en el waypoint no se llega al objetivo temporal
         extra2.innerHTML = `<div class="warning-box2"><strong>⚠ Estimated separation when reaching waypoint below desired (${toMinSecStr(sepTimeAtFix)} minutes).</strong></div>`;
-
-        // Recomendar una ligera reducción si cabe (aunque raro en este caso)
-        if (!Number.isFinite(v2new) || v2new <= 0) {
+      if (!Number.isFinite(v2new) || v2new <= 0) {
           extra3.innerHTML = `<div class="warning-box1">⚠ Unable to compute a valid reduced speed.</div>`;
           return;
         }
-
         if (reductionNotApplicable) {
           extra3.innerHTML = `
             <div class="warning-box1">
@@ -605,22 +344,12 @@ const reasonsHTML = buildNotApplicableReasons({
       }
       return;
     }
-
-    // =========================
-    // Caso B: v2 === v1 (misma velocidad)
-    // =========================
     if (v2 === v1) {
-      // Info siempre
       out.innerHTML = `<div class="info-box">Both traffic have equal speed, separation will not change.</div>`;
-
-      // Avisos <5/<3 NM (sin instrucciones)
       const alerts = showSepDistanceAlerts();
       if (alerts) extra.innerHTML = alerts;
-
-      // Si la separación temporal ACTUAL es inferior a la deseada, proponer reducción (o HOLD si no aplicable)
       if (currentSepMin < desired) {
-        extra2.innerHTML = `<div class="warning-box2"><strong>⚠ Current time separation is already below desired (${toMinSecStr(currentSepMin)} minutes, estimation).</strong></div>`;
-
+        extra2.innerHTML = `<div class="warning-box2"><strong>⚠ Current time separation is already below desired (${toMinSecStr(currentSepMin)} minutes (estimation)).</strong></div>`;
         if (!Number.isFinite(T1) || (T1 + desired) <= 0) {
           extra3.innerHTML = `<div class="warning-box1">⚠ Error (invalid time). Check inputs.</div>`;
           return;
@@ -629,7 +358,6 @@ const reasonsHTML = buildNotApplicableReasons({
           extra3.innerHTML = `<div class="warning-box1">⚠ Unable to compute a valid reduced speed.</div>`;
           return;
         }
-
         if (reductionNotApplicable) {
           extra3.innerHTML = `
             <div class="warning-box1">
@@ -648,31 +376,19 @@ const reasonsHTML = buildNotApplicableReasons({
       }
       return;
     }
-
-    // =========================
-    // Caso C: v2 > v1 (2º más rápido) → cierre
-    // =========================
-    // Mensaje general siempre
     out.innerHTML = `<div class="warning-box1"><strong>2nd traffic faster than 1st -> separation will decrease.</strong></div>`;
-
-    // Avisos <5/<3 NM (sin instrucciones)
     const alertsC = showSepDistanceAlerts();
     if (alertsC) extra.innerHTML = alertsC;
-
     if (!Number.isFinite(T1) || !Number.isFinite(T2)) {
       extra2.innerHTML = `<div class="warning-box1">⚠ Error (invalid time). Check inputs.</div>`;
       return;
     }
-
 if (sepTimeAtFix < desired) {
-  // Caso desfavorable — separación menor a la deseada
   extra2.innerHTML = `<div class="warning-box2"><strong>⚠ Estimated separation when reaching waypoint below desired (${toMinSecStr(sepTimeAtFix)} minutes).</strong></div>`;
-
   if (!Number.isFinite(v2new) || v2new <= 0) {
     extra3.innerHTML = `<div class="warning-box1">⚠ Unable to compute a valid reduced speed.</div>`;
     return;
   }
-
   if (reductionNotApplicable) {
     extra3.innerHTML = `
     <div class="warning-box1">
@@ -688,13 +404,11 @@ if (sepTimeAtFix < desired) {
       </div>
     `;
   }
-
 } else {
-  // Caso favorable — separación suficiente
   extra2.innerHTML = `
     <div class="info-box">
       Separation at waypoint will be ${toMinSecStr(sepTimeAtFix)}, which is greater than the desired.<br>
-      No speed adjustment required.
+      No speed adjustment seems to be required.
     </div>
   `;
 }
@@ -720,22 +434,6 @@ if (sep0 < 10) {
     if (out) out.innerHTML = `<div class="warning-box1">⚠ Unexpected error. Check console for details.</div>`;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   function clearSpeedReduction() {
     document.getElementById('sr_dist').value = '';
     document.getElementById('sr_speed1').value = '';
@@ -747,31 +445,23 @@ if (sep0 < 10) {
     document.getElementById('sr_extra2').textContent = '';
     document.getElementById('sr_extra3').textContent = '';
   }
-
-  // --- Separation after distance (constant speeds) ---
   function calcSeparationAfter() {
     const v1 = parseFloat(document.getElementById('sa_speed1').value);
     const v2 = parseFloat(document.getElementById('sa_speed2').value);
     const sep0 = parseFloat(document.getElementById('sa_sep').value);
     const dist = parseFloat(document.getElementById('sa_dist').value);
     const out = document.getElementById('sa_result');
-
     out.textContent = '';
-
     if (!(v1 > 0) || !(v2 > 0) || !(sep0 >= 0) || !(dist >= 0)) {
       out.innerHTML = '⚠ Please enter valid numbers.';
       return;
     }
-
-    // Constant speeds
     const t_first = (dist * 60) / v1;
     const dist_second = (v2 / 60) * t_first;
     const sepNM = sep0 + dist - dist_second;
     const sepMin = sepNM / (v1 / 60);
-
-    out.innerHTML = `Estimate separation between both traffic ≈ <br></br> ${sepNM.toFixed(2)} NM / ${toMinSecStr(sepMin)} (${sepMin.toFixed(2)} min)`;
+    out.innerHTML = `Estimate separation between both traffic after traveled distance:</br> ${sepNM.toFixed(2)} NM / ${toMinSecStr(sepMin)} minutes (estimation)`;
   }
-
   function clearSeparationAfter() {
     document.getElementById('sa_speed1').value = '';
     document.getElementById('sa_speed2').value = '';
