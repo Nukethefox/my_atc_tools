@@ -65,7 +65,7 @@
               <button id="dep_calc" type="button" class="calcbutton">Calculate</button>
             </form>
             <hr style="width: 90%" />
-            <div id="dep_result" style="min-height: 30px; text-align: center; font-size: 24px"></div>
+            <div id="dep_result" style="min-height: 60px; text-align: center; font-size: 24px"></div>
             <hr style="width: 90%" />
             <p>NOTES:</p>
             <ul>
@@ -104,7 +104,7 @@
             </form>
             <div style="height: 47px"></div>
             <hr style="width: 90%" />
-            <div id="air_result" class="resultseparation" style="min-height: 30px; text-align: center; font-size: 24px"></div>
+            <div id="air_result" class="resultseparation" style="min-height: 60px; text-align: center; font-size: 24px"></div>
             <hr style="width: 90%" />
           </div>
         </div>
@@ -182,23 +182,16 @@
       const weightKey = keyPair(first, second);
       const weightBase = DEPARTING_MIN[weightKey]; 
       const speedKey = `${firstSpeed}-${secondSpeed}`;
-      const speedEntry = DEPARTING_SPEED[speedKey]; 
-      const speedHasHold =
+      const speedEntry = DEPARTING_SPEED[speedKey] || {}; 
+      const speedHasHold = 
       speedEntry && (speedEntry.nm === "HOLD" || speedEntry.min === "HOLD");
       const weightHasHold = weightBase === "HOLD";
-      if (speedHasHold || weightHasHold) {
-        out.textContent = "HOLD";
-        return;
-      }
+      const hasHold = speedHasHold || weightHasHold;
       const nmFromSpeed = speedEntry && typeof speedEntry.nm === "number"? speedEntry.nm: null;
       const minFromSpeed = speedEntry && typeof speedEntry.min === "number"? speedEntry.min: null;
       const minFromWeight = typeof weightBase === "number" ? weightBase : null;
-      if (
-        nmFromSpeed == null && minFromSpeed == null && minFromWeight == null
-      ) {
-        out.innerHTML =`<div style="font-size: 24px;">Not applicable (${second} behind ${first} departing)</div>` + `<div>${fmtResult(null, null)}</div>`;
-        return;
-      }
+      const wakeNotApplicable = weightBase == null;
+      
       let minVal = null;
       if (minFromSpeed != null && minFromWeight != null) {
         minVal = Math.max(minFromSpeed, minFromWeight);
@@ -220,7 +213,16 @@
       const parts = [];
       if (nmVal != null) parts.push(`${fmtNum(nmVal)} NM`);
       if (minVal != null) parts.push(`${fmtNum(minVal)} MIN`);
-      out.textContent = parts.join(" / ");
+      let resultText = parts.join(" / ");
+      if (wakeNotApplicable) {
+        resultText += ` wake turbulence separation not applicable (${second} behind ${first})`;
+      }
+      out.textContent = resultText;
+      if (hasHold) {
+        out.textContent = `HOLD → ${resultText}`;
+      } else {
+        out.textContent = resultText;
+      }
     });
     document.getElementById("air_calc").addEventListener("click", () => {
       const first = document.getElementById("air_first").value;
