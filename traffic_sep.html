@@ -214,15 +214,20 @@
       if (nmVal != null) parts.push(`${fmtNum(nmVal)} NM`);
       if (minVal != null) parts.push(`${fmtNum(minVal)} MIN`);
       let resultText = parts.join(" / ");
-      if (wakeNotApplicable) {
-        resultText += ` wake turbulence separation not applicable (${second} behind ${first})`;
+      if (hasHold) {
+        if (minFromWeight != null) {
+          resultText = `HOLD → ${fmtNum(minFromWeight)} MIN`;
+        } else {
+          resultText = `HOLD → wake turbulence separation not applicable (${second} behind ${first})`;
+        }
+      } else {
+        if (minFromWeight != null) {
+          if (minVal == null || minFromWeight > minVal) {
+            resultText = `${fmtNum(minFromWeight)} MIN`;
+          }
+        }
       }
       out.textContent = resultText;
-      if (hasHold) {
-        out.textContent = `HOLD → ${resultText}`;
-      } else {
-        out.textContent = resultText;
-      }
     });
     document.getElementById("air_calc").addEventListener("click", () => {
       const first = document.getElementById("air_first").value;
